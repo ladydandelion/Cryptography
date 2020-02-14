@@ -3,9 +3,7 @@ public class fairplay{
   private char [][] cipherMatrix = new char[5][5];
   private char [] alphabet= new char[]{'a','b','c','d','e','f','g','h','i','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
 
-  public fairplay(String key){
-    this.setKey(key);
-    this.fillCipherMatrix();
+  public fairplay(){
   }
 
   public void setKey(String key){
@@ -27,6 +25,11 @@ public class fairplay{
   private void fillCipherMatrix(){
     int counter=0;
     int length=this.key.length();
+    for(int i=0;i<this.cipherMatrix.length;i++){        //vaciado de matrix cada vez que llenamos
+      for(int j=0;j<this.cipherMatrix[i].length;j++){
+        this.cipherMatrix[i][j]=' ';
+      }
+    }
     for(int i=0;i<this.cipherMatrix.length;i++){
       for(int j=0;j<this.cipherMatrix[i].length;j++){
         if(counter<this.key.length()){
@@ -53,6 +56,12 @@ public class fairplay{
             cipherMatrix[i][j]=alphabet[countLetters];
         }
       }
+    }
+    for(int i=0;i<this.cipherMatrix.length;i++){
+      for(int j=0;j<this.cipherMatrix[i].length;j++){
+        System.out.print(this.cipherMatrix[i][j]);
+      }
+      System.out.println("");
     }
   }
 
@@ -207,10 +216,12 @@ public class fairplay{
   }
 
 
-  public String encrypt(String word){
+  public String encrypt(String word,String key){
     String wordProcessed=this.proccessWord(word);
     int first=0;
     int second=1;
+    this.setKey(key);
+    this.fillCipherMatrix();
     while(second<wordProcessed.length()){
       char [] encrypted=this.encrypt(this.cipherMatrix,wordProcessed.charAt(first),wordProcessed.charAt(second),false);
       wordProcessed=this.replace(wordProcessed,first,encrypted[0]);
@@ -223,9 +234,11 @@ public class fairplay{
   }
 
 
-  public String decrypt(String word){
+  public String decrypt(String word,String key){
     int first=0;
     int second=1;
+    this.setKey(key);
+    this.fillCipherMatrix();
     while(second<word.length()){
       char [] encrypted=this.encrypt(this.cipherMatrix,word.charAt(first),word.charAt(second),true);
       word=this.replace(word,first,encrypted[0]);
